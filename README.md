@@ -47,5 +47,7 @@ Target //mediapipe/examples/android/src/java/com/google/mediapipe/apps/AI-Health
 INFO: Elapsed time: 547.622s, Critical Path: 294.79s
 INFO: 2 processes: 1 internal, 1 linux-sandbox.
 INFO: Build completed successfully, 2 total actions
+
 cai@ubuntu:~/mediapipe$ 
+
 build guide end;
