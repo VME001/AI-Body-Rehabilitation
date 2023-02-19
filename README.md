@@ -6,7 +6,9 @@ Operating environment:
 Linux version 4.15.0-194-generic (buildd@lcy02-amd64-052) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #205-Ubuntu SMP Fri Sep 16 19:49:27 UTC 2022
 
 build guide:
+
 cai@ubuntu:~$ cd mediapipe
+
 cai@ubuntu:~/mediapipe$ bazel build -c opt --config=android_arm64 mediapipe/examples/android/src/java/com/google/mediapipe/apps/AI-HealthCare:AI-HealthCare
 Starting local Bazel server and connecting to it...
 ... still trying to connect to local Bazel server after 10 seconds ...
