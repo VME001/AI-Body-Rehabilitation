@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <!-- 引入 ECharts 文件 -->
+    <script src="echarts.min.js"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="height: 244px;"></div>
+<script type="text/javascript">
+     var myChart1 = echarts.init(document.getElementById('main'));
+
+var option;
+option = {
+        title: {
+          text: "工单数波形图",
+          textStyle: {
+            color: "#2DC3FB",
+            fontWeight: "bold",
+            fontSize: "16",
+          },
+          padding: [20, 0, 0, 0],
+        },
+        tooltip: {
+          backgroundColor: "#31516B",
+          opacity: 0.3,
+          trigger: "axis",
+          axisPointer: {  // 焦点处样式
+            type: "cross",
+          },
+          extraCssText: "text-align: center;",
+          //在这里设置
+          formatter: "{b0}<br/>{c0}个",
+          textStyle: {
+            color: "rgba(145, 201, 246, 1)",
+          },
+        },
+        legend: {
+          data: ["总工单", "未完成工单"],
+          textStyle: {
+            color: "#738CA0",
+          },
+          itemWidth: 10,
+          itemHeight: 10,
+          icon: "rect",
+          right: 16,
+          top: 16,
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            color: "#20dbfd",
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#20dbfd",
+            },
+          },
+          data: ["07-11", "07-12", "07-13", "07-14", "07-15", "07-16", "07-17"],
+        },
+        yAxis: {
+          type: "value",
+          min: 0,
+          max: 100,
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            // 折线下方阴影
+            color: "#20dbfd",
+          },
+          axisLine: {
+            // 坐标轴线
+            lineStyle: {
+              color: "#20dbfd",
+            },
+          },
+          splitLine: {
+            // y轴 辅助线
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: "总工单",
+            type: "line",
+            smooth: false,
+            stack: "总工单",
+            symbol: "circle", // 拐点为实心的 默认为空心
+            itemStyle: {
+              color: "#72F5FF",
+            },
+            lineStyle: {
+              shadowBlur: 5,
+              color: "#17D5E3",
+              shadow: "0px 5px 1px 0px rgba(0, 0, 0, 0.41)",
+            },
+            areaStyle: {
+              opacity: 0.5,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: "rgba(13, 182, 252, 0.5)",
+                },
+                {
+                  offset: 1,
+                  color: "rgba(13, 182, 252, 0)",
+                },
+              ]),
+            },
+            data: [30, 26, 60, 67, 50, 80, 37],
+          },
+          {
+            name: "未完成工单",
+            type: "line",
+            smooth: false,
+            stack: "未完成工单",
+            symbol: "circle", // 拐点为实心的 默认为空心
+            itemStyle: {
+              color: "#ff3f68",
+            },
+            lineStyle: {
+              shadowBlur: 5,
+              color: "#E74867",
+              shadow: "0px 5px 1px 0px rgba(0, 0, 0, 0.41)",
+            },
+            areaStyle: {
+              opacity: 0.5,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: "rgba(231, 72, 103, 0.5)",
+                },
+                {
+                  offset: 1,
+                  color: "rgba(231, 72, 103, 0)",
+                },
+              ]),
+            },
+            data: [10, 6, 37, 25, 30, 8, 16],
+          },
+        ],
+      };
+      //先初始化默认的echarts图 ，setData() 这个方法是来接收需要改变echarts图的地方
+myChart1.setOption(option);
+   function setData(option) {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+        </script>
+    </body>
+</html>

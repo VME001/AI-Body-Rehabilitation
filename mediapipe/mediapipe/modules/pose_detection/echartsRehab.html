@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0">
+		<div style="display:flex;flex-direction:row;height: 100%">
+
+				<!-- 元素1 -->
+				<div id="containerF1"  style="display:inline;flex:1;width:35%">
+				</div>
+				<!-- 元素1 -->
+				<div id="containerF2" style="display:inline;flex:1;width:65%"">
+				</div>
+		</div>
+
+		<div style="display:flex;flex-direction:row;height: 100%">
+
+				<!-- 元素1 -->
+				<div id="containerF3"  style="display:inline;flex:1;width:35%">
+				</div>
+				<!-- 元素1 -->
+				<div id="containerF4" style="display:inline;flex:1;width:65%"">
+				</div>
+		</div>
+
+		<div style="display:flex;flex-direction:row;height: 100%">
+
+				<!-- 元素1 -->
+				<div id="containerF5"  style="display:inline;flex:1;width:35%">
+				</div>
+				<!-- 元素1 -->
+				<div id="containerF6" style="display:inline;flex:1;width:65%"">
+				</div>
+		</div>
+
+        <script type="text/javascript" src="./echarts.js"></script>
+        <script type="text/javascript">
+            var chartDom = document.getElementById('containerF1');
+		var myChart = echarts.init(chartDom,'dark');
+		var option;
+		var evaluating = []; var referenceValue = [80, 80, 60, 90, 90];
+
+		option = {
+		  title: {
+	
+		    text: '康复评定指标雷达图一'
+		  },
+		  tooltip: {
+		    trigger: 'axis'
+		  },
+		  toolbox: {
+
+			itemSize: 30,
+		    feature: {
+			myTool1: {	
+		        show: true,
+		        title: '同步康复数据到AI医院云平台',
+		        icon: 'image://Doctor.png',
+		        onclick: function (){
+		            alert('数据!');
+			    //deleteData()
+		        }
+			},/*
+			myTool1space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+			
+		    },
+		      dataZoom: {
+			yAxisIndex: false
+		      },
+		      saveAsImage: {
+			pixelRatio: 2
+		      }*/
+		    }
+		  },
+		  legend: {
+		    left: 'center',
+		    top: '5%',	
+		    data: [
+		      '参考评测指标',
+		      '当前评测结果'
+		      
+
+		    ]
+		  },
+		  radar: [
+		    {
+		      indicator: [
+			{ text: '平衡感', max: 100 },/*
+			{ text: '敏捷度', max: 100 },
+			{ text: '连续性', max: 100 },
+			{ text: '力量控制', max: 100 },
+			{ text: '爆发力', max: 100 },*/
+			{ text: '协调度', max: 100 },
+			{ text: '步幅值(单位:厘米)', max: 100 },
+			{ text: '步频值(单位:每分钟)', max: 120 },
+			{ text: '摆臂频率(单位:每分钟)', max: 120 }
+		      ],
+		      center: ['50%', '51%'],
+		      radius: 180
+		    }
+		  ],
+		  series: [
+		    {
+		      type: 'radar',
+		      tooltip: {
+			trigger: 'item'
+		      },
+		      areaStyle: {},
+		      data: [
+			{
+			  value: referenceValue,
+			  name: '参考评测指标'
+			},
+			{
+			  value: evaluating,
+			  name: '当前评测结果'
+			}
+		      ]
+		    }
+		]
+		      
+		    
+		  
+		};
+
+		option && myChart.setOption(option);
+
+
+		function refreshData (i0, i1, i2, i3, i4/*, i5, i6, i7, i8*/) {
+
+  			
+			//alert(date);
+/*
+			this.xAxisData[this.count] = date;//alert(date);
+			this.data0[this.count] = i0;//alert(date);
+			this.data1[this.count] = i1;//alert(date);
+			this.data2[this.count] = i2;//alert(date);
+			this.data3[this.count] = i3;//alert(date);
+			this.data4[this.count] = i4;//alert(date);
+			this.data5[this.count] = i5;//alert(date);
+			this.data6[this.count] = i6;//alert(date);
+			this.data7[this.count] = i7;//alert(date);
+			this.data8[this.count] = i8;//alert(date);
+			this.data9[this.count] = i9;//alert(date);
+			this.data10[this.count] = i10;//alert(date);
+			this.data11[this.count] = i11;//alert(date);
+			this.data12[this.count] = i12;//alert(date);
+			this.count++;//alert(date);
+*/
+	
+			this.evaluating[0] = (i0);//alert(date);
+			this.evaluating[1] = (i1);//alert(date);
+			this.evaluating[2] = (i2);//alert(date);
+			this.evaluating[3] = (i3);//alert(date);
+			this.evaluating[4] = (i4);//alert(date);
+			/*this.evaluating[5] = (i5);//alert(date);
+			this.evaluating[6] = (i6);//alert(date);
+			this.evaluating[7] = (i7);//alert(date);
+			this.evaluating[8] = (i8);//alert(date);*/
+
+        	this.myChart.setOption(this.option,true);
+		this.optionTable && this.myChartTable.setOption(this.optionTable,true);
+		//alert("refreshData!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+ 		}
+
+		function alertMessage(message) {
+       		 alert(message)
+    		}
+
+		function sayHello() {
+        	alert("Hello")
+    		}
+
+		//sayHello();alertMessage("Alles Gute");
+		// refreshData ("15:15:15",10,20,30,40,5,0,1,2,3,5,4,6,5);
+
+		var app = {};
+
+		var chartDomTable = document.getElementById('containerF2');
+		var myChartTable = echarts.init(chartDomTable,'dark');
+		var optionTable;
+
+		const posListTable = [
+		  'left',
+		  'right',
+		  'top',
+		  'bottom',
+		  'inside',
+		  'insideTop',
+		  'insideLeft',
+		  'insideRight',
+		  'insideBottom',
+		  'insideTopLeft',
+		  'insideTopRight',
+		  'insideBottomLeft',
+		  'insideBottomRight'
+		];
+		app.configParameters = {
+		  rotate: {
+		    min: -90,
+		    max: 90
+		  },
+		  align: {
+		    options: {
+		      left: 'left',
+		      center: 'center',
+		      right: 'right'
+		    }
+		  },
+		  verticalAlign: {
+		    options: {
+		      top: 'top',
+		      middle: 'middle',
+		      bottom: 'bottom'
+		    }
+		  },
+		  position: {
+		    options: posListTable.reduce(function (map, pos) {
+		      map[pos] = pos;
+		      return map;
+		    }, {})
+		  },
+		  distance: {
+		    min: 0,
+		    max: 100
+		  }
+		};
+		app.config = {
+		  rotate: 90,
+		  align: 'left',
+		  verticalAlign: 'middle',
+		  position: 'insideBottom',
+		  distance: 15,
+		  onChange: function () {
+		    const labelOption = {
+		      rotate: app.config.rotate,
+		      align: app.config.align,
+		      verticalAlign: app.config.verticalAlign,
+		      position: app.config.position,
+		      distance: app.config.distance
+		    };
+		    myChartTable.setOptionTable({
+		      series: [
+			{
+			  label: labelOption
+			},
+			{
+			  label: labelOption
+			},
+			{
+			  label: labelOption
+			},
+			{
+			  label: labelOption
+			}
+		      ]
+		    });
+		  }
+		};
+		const labelOption = {
+		  show: true,
+		  position: app.config.position,
+		  distance: app.config.distance,
+		  align: app.config.align,
+		  verticalAlign: app.config.verticalAlign,
+		  rotate: app.config.rotate,
+		  formatter: '{c}  {name|{a}}',
+		  fontSize: 16,
+		  rich: {
+		    name: {}
+		  }
+		};
+		optionTable = {
+		  tooltip: {
+		    trigger: 'axis',
+		    axisPointer: {
+		      type: 'shadow'
+		    }
+		  },
+		  legend: {
+		    top: '5%',	
+		    data: ['参考评测指标', '当前评测结果']
+		  },
+		  toolbox: {
+			itemSize: 20,
+		    show: true,
+		    orient: 'vertical',
+		    left: 'right',
+		    top: 'center',
+		    feature: {
+		      mark: { show: true },
+		      dataView: { show: true, readOnly: false },
+		      magicType: { show: true, type: ['line', 'bar', 'stack'] },
+		      restore: { show: true },
+		      saveAsImage: { show: false }
+		    }
+		  },
+		  xAxis: [
+		    {
+		      type: 'category',
+		      axisTick: { show: false },
+		      data: ['平衡感', /*'敏捷度', '连续性', '力量控制', '爆发力', */'协调度', '步幅值',  '步频值', '摆臂频率']
+		    }
+		  ],
+		  yAxis: [
+		    {
+		      type: 'value'
+		    }
+		  ],
+		  series: [
+		    {
+		      name: '参考评测指标',
+		      type: 'bar',
+		      barGap: 0,
+		      label: labelOption,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: referenceValue
+		    },
+		    {
+		      name: '当前评测结果',
+		      type: 'bar',
+		      label: labelOption,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: evaluating
+		    }
+		  ]
+		};
+
+		optionTable && myChartTable.setOption(optionTable);
+
+
+		function deleteRehabData() {
+
+
+			this.evaluating[0] = (0);//alert(date);
+			this.evaluating[1] = (0);//alert(date);
+			this.evaluating[2] = (0);//alert(date);
+			this.evaluating[3] = (0);//alert(date);
+			this.evaluating[4] = (0);//alert(date);
+			/*this.evaluating[5] = (0);//alert(date);
+			this.evaluating[6] = (0);//alert(date);
+			this.evaluating[7] = (0);//alert(date);
+			this.evaluating[8] = (0);//alert(date);*/
+
+        	this.myChart.setOption(this.option,true);
+		this.optionTable && this.myChartTable.setOption(this.optionTable,true);
+		}
+
+		//refreshData (66,55,44,99,88/*,77,66,55,44*/);
+		//deleteRehabData();
+
+
+
+       var chartDomF3 = document.getElementById('containerF3');
+		var myChartF3 = echarts.init(chartDomF3,'dark');
+		var optionF3;
+		var evaluatingF3 = []; var referenceValueF3 = [50, 50, 60, /*45,*/ 150, 135];
+
+		optionF3 = {
+		  title: {
+	
+		    text: '康复评定指标雷达图二'
+		  },
+		  tooltip: {
+		    trigger: 'axis'
+		  },
+		  toolbox: {
+
+			itemSize: 30,
+		    feature: {
+			myTool1: {
+
+		        show: true,
+		        title: '同步康复数据到AI医院云平台',
+		        icon: 'image://Doctor.png',
+		        onclick: function (){
+		            alert('数据!');
+			    //deleteData()
+		        }
+			},/*
+			myTool1space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+			
+		    },
+		      dataZoom: {
+			yAxisIndex: false
+		      },
+		      saveAsImage: {
+			pixelRatio: 2
+		      }*/
+		    }
+		  },
+		  legend: {
+		    left: 'center',
+		    top: '5%',	
+		    data: [
+		      '参考评测指标',
+		      '当前评测结果'
+		      
+
+		    ]
+		  },
+		  radar: [
+		    {
+		      indicator: [
+			{ text: '左上肢肌力水平(指标乘系数10)', max: 50 },/*
+			{ text: '敏捷度', max: 100 },
+			{ text: '连续性', max: 100 },
+			{ text: '力量控制', max: 100 },
+			{ text: '爆发力', max: 100 },*/
+			{ text: '左下肢肌力水平(指标乘系数10)', max: 50 },
+			{ text: '左肩关节活动度(单位:角度)', max: 90 },
+			/*{ text: '左肩关节活动度后伸(单位:角度)', max: 60 },*/
+			{ text: '左肘关节活动度(单位:角度)', max: 180 },
+			{ text: '左膝关节活动度(单位:角度)', max: 180 }
+		      ],
+		      center: ['50%', '51%'],
+		      radius: 150
+		    }
+		  ],
+		  series: [
+		    {
+		      type: 'radar',
+		      tooltip: {
+			trigger: 'item'
+		      },
+		      areaStyle: {},
+		      data: [
+			{
+			  value: referenceValueF3,
+			  name: '参考评测指标'
+			},
+			{
+			  value: evaluatingF3,
+			  name: '当前评测结果'
+			}
+		      ]
+		    }
+		]
+		      
+		    
+		  
+		};
+
+		optionF3 && myChartF3.setOption(optionF3);
+
+
+		function refreshDataF3 (i0, i1, i2, i3, i4/*, i5, i6, i7, i8*/) {
+
+  			
+			//alert(date);
+/*
+			this.xAxisData[this.count] = date;//alert(date);
+			this.data0[this.count] = i0;//alert(date);
+			this.data1[this.count] = i1;//alert(date);
+			this.data2[this.count] = i2;//alert(date);
+			this.data3[this.count] = i3;//alert(date);
+			this.data4[this.count] = i4;//alert(date);
+			this.data5[this.count] = i5;//alert(date);
+			this.data6[this.count] = i6;//alert(date);
+			this.data7[this.count] = i7;//alert(date);
+			this.data8[this.count] = i8;//alert(date);
+			this.data9[this.count] = i9;//alert(date);
+			this.data10[this.count] = i10;//alert(date);
+			this.data11[this.count] = i11;//alert(date);
+			this.data12[this.count] = i12;//alert(date);
+			this.count++;//alert(date);
+*/
+	
+			this.evaluatingF3[0] = (i0);//alert(date);
+			this.evaluatingF3[1] = (i1);//alert(date);
+			this.evaluatingF3[2] = (i2);//alert(date);
+			this.evaluatingF3[3] = (i3);//alert(date);
+			this.evaluatingF3[4] = (i4);//alert(date);
+			//this.evaluatingF3[5] = (i5);//alert(date);
+			/*this.evaluating[6] = (i6);//alert(date);
+			this.evaluating[7] = (i7);//alert(date);
+			this.evaluating[8] = (i8);//alert(date);*/
+
+        	this.myChartF3.setOption(this.optionF3,true);
+		this.optionTableF4 && this.myChartTableF4.setOption(this.optionTableF4,true);
+		//alert("refreshData!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+ 		}
+
+		function alertMessage(message) {
+       		 alert(message)
+    		}
+
+		function sayHello() {
+        	alert("Hello")
+    		}
+
+		//sayHello();alertMessage("Alles Gute");
+		// refreshData ("15:15:15",10,20,30,40,5,0,1,2,3,5,4,6,5);
+
+		var appF4 = {};
+
+		var chartDomTableF4 = document.getElementById('containerF4');
+		var myChartTableF4 = echarts.init(chartDomTableF4,'dark');
+		var optionTableF4;
+
+		const posListTableF4 = [
+		  'left',
+		  'right',
+		  'top',
+		  'bottom',
+		  'inside',
+		  'insideTop',
+		  'insideLeft',
+		  'insideRight',
+		  'insideBottom',
+		  'insideTopLeft',
+		  'insideTopRight',
+		  'insideBottomLeft',
+		  'insideBottomRight'
+		];
+		appF4.configParameters = {
+		  rotate: {
+		    min: -90,
+		    max: 90
+		  },
+		  align: {
+		    options: {
+		      left: 'left',
+		      center: 'center',
+		      right: 'right'
+		    }
+		  },
+		  verticalAlign: {
+		    options: {
+		      top: 'top',
+		      middle: 'middle',
+		      bottom: 'bottom'
+		    }
+		  },
+		  position: {
+		    options: posListTableF4.reduce(function (map, pos) {
+		      map[pos] = pos;
+		      return map;
+		    }, {})
+		  },
+		  distance: {
+		    min: 0,
+		    max: 100
+		  }
+		};
+		appF4.config = {
+		  rotate: 90,
+		  align: 'left',
+		  verticalAlign: 'middle',
+		  position: 'insideBottom',
+		  distance: 15,
+		  onChange: function () {
+		    const labelOptionF4 = {
+		      rotate: appF4.config.rotate,
+		      align: appF4.config.align,
+		      verticalAlign: appF4.config.verticalAlign,
+		      position: appF4.config.position,
+		      distance: appF4.config.distance
+		    };
+		    myChartTableF4.setOptionTable({
+		      series: [
+			{
+			  label: labelOptionF4
+			},
+			{
+			  label: labelOptionF4
+			},
+			{
+			  label: labelOptionF4
+			},
+			{
+			  label: labelOptionF4
+			}
+		      ]
+		    });
+		  }
+		};
+		const labelOptionF4 = {
+		  show: true,
+		  position: appF4.config.position,
+		  distance: appF4.config.distance,
+		  align: appF4.config.align,
+		  verticalAlign: appF4.config.verticalAlign,
+		  rotate: appF4.config.rotate,
+		  formatter: '{c}  {name|{a}}',
+		  fontSize: 16,
+		  rich: {
+		    name: {}
+		  }
+		};
+		optionTableF4 = {
+		  tooltip: {
+		    trigger: 'axis',
+		    axisPointer: {
+		      type: 'shadow'
+		    }
+		  },
+		  legend: {
+		    top: '5%',	
+		    data: ['参考评测指标', '当前评测结果']
+		  },
+		  toolbox: {
+			itemSize: 20,
+		    show: true,
+		    orient: 'vertical',
+		    left: 'right',
+		    top: 'center',
+		    feature: {
+		      mark: { show: true },
+		      dataView: { show: true, readOnly: false },
+		      magicType: { show: true, type: ['line', 'bar', 'stack'] },
+		      restore: { show: true },
+		      saveAsImage: { show: false }
+		    }
+		  },
+		  xAxis: [
+		    {
+		      type: 'category',
+		      axisTick: { show: false },
+		      data: ['左上肢肌力水平', /*'敏捷度', '连续性', '力量控制', '爆发力', */'左下肢肌力水平','左肩关节活动度', /*'左肩关节活动度后伸',*/  '左肘关节活动度', '左膝关节活动度']
+		    }
+		  ],
+		  yAxis: [
+		    {
+		      type: 'value'
+		    }
+		  ],
+		  series: [
+		    {
+		      name: '参考评测指标',
+		      type: 'bar',
+		      barGap: 0,
+		      label: labelOptionF4,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: referenceValueF3
+		    },
+		    {
+		      name: '当前评测结果',
+		      type: 'bar',
+		      label: labelOptionF4,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: evaluatingF3
+		    }
+		  ]
+		};
+
+		optionTableF4 && myChartTableF4.setOption(optionTableF4);
+
+
+		function deleteRehabDataF3() {
+
+
+			this.evaluatingF3[0] = (0);//alert(date);
+			this.evaluatingF3[1] = (0);//alert(date);
+			this.evaluatingF3[2] = (0);//alert(date);
+			this.evaluatingF3[3] = (0);//alert(date);
+			this.evaluatingF3[4] = (0);//alert(date);
+			//this.evaluatingF3[5] = (0);//alert(date);
+			/*this.evaluating[6] = (0);//alert(date);
+			this.evaluating[7] = (0);//alert(date);
+			this.evaluating[8] = (0);//alert(date);*/
+
+        	this.myChartF3.setOption(this.optionF3,true);
+		this.optionTableF4 && this.myChartTableF4.setOption(this.optionTableF4,true);
+		}
+
+
+
+       var chartDomF5 = document.getElementById('containerF5');
+		var myChartF5 = echarts.init(chartDomF5,'dark');
+		var optionF5;
+		var evaluatingF5 = []; var referenceValueF5 = [50, 50, 60,/* 45,*/ 150, 135];
+
+		optionF5 = {
+		  title: {
+	
+		    text: '康复评定指标雷达图三'
+		  },
+		  tooltip: {
+		    trigger: 'axis'
+		  },
+		  toolbox: {
+
+			itemSize: 30,
+		    feature: {
+			myTool1: {
+
+		        show: true,
+		        title: '同步康复数据到AI医院云平台',
+		        icon: 'image://Doctor.png',
+		        onclick: function (){
+		            alert('数据!');
+			    //deleteData()
+		        }
+			},/*
+			myTool1space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+			
+		    },
+		      dataZoom: {
+			yAxisIndex: false
+		      },
+		      saveAsImage: {
+			pixelRatio: 2
+		      }*/
+		    }
+		  },
+		  legend: {
+		    left: 'center',
+		    top: '5%',	
+		    data: [
+		      '参考评测指标',
+		      '当前评测结果'
+		      
+
+		    ]
+		  },
+		  radar: [
+		    {
+		      indicator: [
+			{ text: '右上肢肌力水平(指标乘系数10)', max: 50 },/*
+			{ text: '敏捷度', max: 100 },
+			{ text: '连续性', max: 100 },
+			{ text: '力量控制', max: 100 },
+			{ text: '爆发力', max: 100 },*/
+			{ text: '右下肢肌力水平(指标乘系数10)', max: 50 },
+			{ text: '右肩关节活动度(单位:角度)', max: 90 },
+			/*{ text: '右肩关节活动度后伸(单位:角度)', max: 60 },*/
+			{ text: '右肘关节活动度(单位:角度)', max: 180 },
+			{ text: '右膝关节活动度(单位:角度)', max: 180 }
+		      ],
+		      center: ['50%', '51%'],
+		      radius: 150
+		    }
+		  ],
+		  series: [
+		    {
+		      type: 'radar',
+		      tooltip: {
+			trigger: 'item'
+		      },
+		      areaStyle: {},
+		      data: [
+			{
+			  value: referenceValueF5,
+			  name: '参考评测指标'
+			},
+			{
+			  value: evaluatingF5,
+			  name: '当前评测结果'
+			}
+		      ]
+		    }
+		]
+		      
+		    
+		  
+		};
+
+		optionF5 && myChartF5.setOption(optionF5);
+
+
+		function refreshDataF5 (i0, i1, i2, i3, i4/*, i5/*, i6, i7, i8*/) {
+
+  			
+			//alert(date);
+/*
+			this.xAxisData[this.count] = date;//alert(date);
+			this.data0[this.count] = i0;//alert(date);
+			this.data1[this.count] = i1;//alert(date);
+			this.data2[this.count] = i2;//alert(date);
+			this.data3[this.count] = i3;//alert(date);
+			this.data4[this.count] = i4;//alert(date);
+			this.data5[this.count] = i5;//alert(date);
+			this.data6[this.count] = i6;//alert(date);
+			this.data7[this.count] = i7;//alert(date);
+			this.data8[this.count] = i8;//alert(date);
+			this.data9[this.count] = i9;//alert(date);
+			this.data10[this.count] = i10;//alert(date);
+			this.data11[this.count] = i11;//alert(date);
+			this.data12[this.count] = i12;//alert(date);
+			this.count++;//alert(date);
+*/
+	
+			this.evaluatingF5[0] = (i0);//alert(date);
+			this.evaluatingF5[1] = (i1);//alert(date);
+			this.evaluatingF5[2] = (i2);//alert(date);
+			this.evaluatingF5[3] = (i3);//alert(date);
+			this.evaluatingF5[4] = (i4);//alert(date);
+			//this.evaluatingF5[5] = (i5);//alert(date);
+			/*this.evaluating[6] = (i6);//alert(date);
+			this.evaluating[7] = (i7);//alert(date);
+			this.evaluating[8] = (i8);//alert(date);*/
+
+        	this.myChartF5.setOption(this.optionF5,true);
+		this.optionTableF6 && this.myChartTableF6.setOption(this.optionTableF6,true);
+		//alert("refreshData!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+ 		}
+
+		function alertMessage(message) {
+       		 alert(message)
+    		}
+
+		function sayHello() {
+        	alert("Hello")
+    		}
+
+		//sayHello();alertMessage("Alles Gute");
+		// refreshData ("15:15:15",10,20,30,40,5,0,1,2,3,5,4,6,5);
+
+		var appF6 = {};
+
+		var chartDomTableF6 = document.getElementById('containerF6');
+		var myChartTableF6 = echarts.init(chartDomTableF6,'dark');
+		var optionTableF6;
+
+		const posListTableF6 = [
+		  'left',
+		  'right',
+		  'top',
+		  'bottom',
+		  'inside',
+		  'insideTop',
+		  'insideLeft',
+		  'insideRight',
+		  'insideBottom',
+		  'insideTopLeft',
+		  'insideTopRight',
+		  'insideBottomLeft',
+		  'insideBottomRight'
+		];
+		appF6.configParameters = {
+		  rotate: {
+		    min: -90,
+		    max: 90
+		  },
+		  align: {
+		    options: {
+		      left: 'left',
+		      center: 'center',
+		      right: 'right'
+		    }
+		  },
+		  verticalAlign: {
+		    options: {
+		      top: 'top',
+		      middle: 'middle',
+		      bottom: 'bottom'
+		    }
+		  },
+		  position: {
+		    options: posListTableF6.reduce(function (map, pos) {
+		      map[pos] = pos;
+		      return map;
+		    }, {})
+		  },
+		  distance: {
+		    min: 0,
+		    max: 100
+		  }
+		};
+		appF6.config = {
+		  rotate: 90,
+		  align: 'left',
+		  verticalAlign: 'middle',
+		  position: 'insideBottom',
+		  distance: 15,
+		  onChange: function () {
+		    const labelOptionF6 = {
+		      rotate: appF6.config.rotate,
+		      align: appF6.config.align,
+		      verticalAlign: appF6.config.verticalAlign,
+		      position: appF6.config.position,
+		      distance: appF6.config.distance
+		    };
+		    myChartTableF6.setOptionTable({
+		      series: [
+			{
+			  label: labelOptionF6
+			},
+			{
+			  label: labelOptionF6
+			},
+			{
+			  label: labelOptionF6
+			},
+			{
+			  label: labelOptionF6
+			}
+		      ]
+		    });
+		  }
+		};
+		const labelOptionF6 = {
+		  show: true,
+		  position: appF6.config.position,
+		  distance: appF6.config.distance,
+		  align: appF6.config.align,
+		  verticalAlign: appF6.config.verticalAlign,
+		  rotate: appF6.config.rotate,
+		  formatter: '{c}  {name|{a}}',
+		  fontSize: 16,
+		  rich: {
+		    name: {}
+		  }
+		};
+		optionTableF6 = {
+		  tooltip: {
+		    trigger: 'axis',
+		    axisPointer: {
+		      type: 'shadow'
+		    }
+		  },
+		  legend: {
+		    top: '5%',	
+		    data: ['参考评测指标', '当前评测结果']
+		  },
+		  toolbox: {
+			itemSize: 20,
+		    show: true,
+		    orient: 'vertical',
+		    left: 'right',
+		    top: 'center',
+		    feature: {
+		      mark: { show: true },
+		      dataView: { show: true, readOnly: false },
+		      magicType: { show: true, type: ['line', 'bar', 'stack'] },
+		      restore: { show: true },
+		      saveAsImage: { show: false }
+		    }
+		  },
+		  xAxis: [
+		    {
+		      type: 'category',
+		      axisTick: { show: false },
+		      data: ['右上肢肌力水平', /*'敏捷度', '连续性', '力量控制', '爆发力', */'右下肢肌力水平','右肩关节活动度', /*'右肩关节活动度后伸', */ '右肘关节活动度', '右膝关节活动度']
+		    }
+		  ],
+		  yAxis: [
+		    {
+		      type: 'value'
+		    }
+		  ],
+		  series: [
+		    {
+		      name: '参考评测指标',
+		      type: 'bar',
+		      barGap: 0,
+		      label: labelOptionF6,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: referenceValueF5
+		    },
+		    {
+		      name: '当前评测结果',
+		      type: 'bar',
+		      label: labelOptionF6,
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: evaluatingF5
+		    }
+		  ]
+		};
+
+		optionTableF6 && myChartTableF6.setOption(optionTableF6);
+
+
+		function deleteRehabDataF5() {
+
+
+			this.evaluatingF5[0] = (0);//alert(date);
+			this.evaluatingF5[1] = (0);//alert(date);
+			this.evaluatingF5[2] = (0);//alert(date);
+			this.evaluatingF5[3] = (0);//alert(date);
+			this.evaluatingF5[4] = (0);//alert(date);
+			//this.evaluatingF5[5] = (0);//alert(date);
+			/*this.evaluating[6] = (0);//alert(date);
+			this.evaluating[7] = (0);//alert(date);
+			this.evaluating[8] = (0);//alert(date);*/
+
+        	this.myChartF5.setOption(this.optionF5,true);
+		this.optionTableF6 && this.myChartTableF6.setOption(this.optionTableF6,true);
+		}
+
+
+
+		//refreshData (66,55,44,99,88/*,77,66,55,44*/);
+		//deleteRehabData();
+        </script>
+    </body>
+</html>

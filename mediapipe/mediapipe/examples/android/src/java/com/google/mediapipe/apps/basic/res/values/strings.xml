@@ -1,0 +1,7 @@
+<resources>
+    <string name="no_camera_access" translatable="false">Please grant camera permissions.</string>
+    <string name="button1">姿态检测</string>
+    <string name="button2">运动分析</string>
+    <string name="button3">特征分析</string>
+    <string name="button4">康复评定</string>
+</resources>

@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8">
+    </head>
+    <body style="height: 100%; margin: 0">
+        <div id="container" style="height: 100%"></div>
+        <script type="text/javascript" src="./echarts.js"></script>
+        <script type="text/javascript">
+            var dom =document.getElementById("container");
+            var myChart =echarts.init(dom);
+		   // var myChart = echarts.init(dom, 'dark', {renderer: 'canvas',useDirtyRect: false});
+            var option;
+		//var xAxisData = ['15:15:15'];
+		//var data0 = [10], data1 = [20],data2 = [30],data3 = [40],data4 = [50],data5 = [60],data6 = [70],data7 = [80],data8 = [90],data9 = [100],data10 = [110],data11 = [120],data12 = [130];
+		var xAxisData = [];
+		//var data0 = [], data1 = [],data2 = [],data3 = [],data4 = [],data5 = [],data6 = [],data7 = [],data8 = [],data9 = [],data10 = [],data11 = [],data12 = [],data13 = [],data14 = [];
+		var data = new Array();
+		for(var k=0;k<21;k++){        //一维长度为i,i为变量，可以根据实际情况改变  
+			data[k]=new Array();    //声明二维，每一个一维数组里面的一个元素都是一个数组
+		}
+		var count = 0;
+		var params; var startCalc; var stopCalc; var removeData = true;
+
+
+		option = {
+		  title: {
+		    text: '人体关键点运动分析',
+			top: '0.8%',
+			left: '40%',
+			right: '4%',
+			bottom: '3%',
+		  },
+		  tooltip: {
+		    trigger: 'axis',
+		    axisPointer: {
+		      type: 'cross',
+		      label: {
+			backgroundColor: '#6a7985'
+		      }
+		    }
+		  },
+		  legend: {
+		    data: ['头部', '右肩部', '右肘部' ,'右手腕部' , '左肩部', '左肘部' ,'左手腕部', '右臀部' ,'右膝部' ,'右脚腕部', '左臀部' ,'左膝部' ,'左脚腕部','右脚跟' ,'左脚跟'],
+			top: '6%',
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+		  },
+		  toolbox: {
+			top: '0%',
+ 			right: '10%',
+			itemSize: 20,
+		    feature: {
+			myTool1: {
+		        show: true,
+		        title: '清空数据',
+		        icon: 'image://clean.png',
+		        onclick: function (){
+		            alert('清空数据!');
+			    deleteData()
+		        }
+		    },
+			myTool1space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+		      dataZoom: {
+			yAxisIndex: false
+		      },
+		      saveAsImage: {
+			pixelRatio: 2
+		      },/*
+            		myTool1: {
+		        show: true,
+		        title: '清空数据',
+		        icon: 'image://clean.png',
+		        onclick: function (){
+		            alert('清空数据!')
+		        }
+		    },*/
+			myTool2space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+
+		    myTool2: {
+		        show: true,
+		        title: '暂停',
+		        icon: 'image://stop.png',
+		        onclick: function (){
+				callJAVAStop()
+		            alert('暂停!')
+		        }
+		    },
+			myTool3space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+		    myTool3: {
+		        show: true,
+		        title: '开始',
+		        icon: 'image://run.png',
+		        onclick: function (){
+				callJAVARun()
+		            alert('开始!')
+		        }
+		    },
+			myTool4space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+			restore: {}
+			,
+			myTool5space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    }
+		    }
+		  },
+		  dataZoom: [
+		    {
+		      type: 'inside'
+		    },
+		    {
+		      type: 'slider',
+		    bottom: '5%'
+		    }
+		  ],
+		  brush:{
+			toolbox:['lineX', 'keep', 'clear'],
+			xAxisIndex: 0,
+		    brushStyle: {
+		      borderWidth: 1,
+		      color: 'rgba(255,36,36,0.2)',
+		      borderColor: '#ff2424'
+		    }
+		  },
+		  grid: {
+ 		    top: "10%",
+		    left: '3%',
+		    right: '4%',
+		    bottom: '10%',
+		    containLabel: true
+		  },
+		  xAxis: [
+		    {
+		      type: 'category',
+		      boundaryGap: false,
+		      //data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+		      data: xAxisData
+		    }
+		  ],
+		  yAxis: [
+		    {
+		      type: 'value'
+		    }
+		  ],
+		  series: [
+		    {
+		      name: '头部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[0]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右肩部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		       data: data[1]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右肘部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[2]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右手腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[3]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+{
+		      name: '左肩部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[4]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左肘部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[5]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左手腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[6]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右臀部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[7]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+{
+		      name: '右膝部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[8]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右脚腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[9]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左臀部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[10]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左膝部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[11]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左脚腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[12]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右脚跟',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[13]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左脚跟',
+		      type: 'line',
+		      //stack: 'Total',
+		      label: {
+			show: true,
+			position: 'top'
+		      },
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[14]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    }
+		  ]
+		};
+
+
+		option && myChart.setOption(option);
+		myChart.on('brushEnd', renderBrushed);
+		function renderBrushed(params){
+		console.log(params);
+		 // console.log('params',params);
+		  var brushed = [];
+		  var brushComponent = params;
+		  // for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
+		  //   var rawIndices = brushComponent.selected[sIdx].dataIndex;
+		  //   brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
+		  // }
+		  let numArray=[];//选中范围
+		  if(brushComponent.areas[0]!==undefined){
+		    numArray=brushComponent.areas[0].coordRange;//alert(numArray);
+		  };
+		  startCalc = numArray[0];alert(startCalc);//alert(data0[startCalc]);
+		  stopCalc = numArray[1];alert(stopCalc);alert(stopCalc - startCalc + 1);
+		  stopCalc = highestOneBit(stopCalc - startCalc + 1);alert(stopCalc);
+		  ////////////////////////////////////////////////////////////////////////////Data0
+		  var arrdata0 = new Array(15);var maxdata = new Array(15);var mindata = new Array(15);var averagedata = new Array(15);var peakdata =new Array(15);var RMEANdata = new Array(15);var meanSquareValue = new Array(15);var variance = new Array(15);var RMS = new Array(15);var standardDeviation = new Array(15);var Kurtosis = new Array(15), skewness = new Array(15), waveformfactor = new Array(15), peakfactor = new Array(15), pulsefactor = new Array(15), marginfactor = new Array(15); //峭度、偏度、波形因子、峰值因子、脉冲因子、裕度因子
+		  var CenterGravityFrequency = new Array(15), meanSquareFrequency = new Array(15), rootMeanSquareFrequency = new Array(15), frequencyVariance = new Array(15), frequencyStandardDeviation = new Array(15);//重心频率、均方频率、均方根频率、频率方差、频率标准差
+		  for(var cnt = 0; cnt<15; cnt++){
+			arrdata0 = [];
+			arrdata0 = data[cnt].slice(startCalc,(startCalc+stopCalc));//alert(arrdata0);
+			var rawData = new Array(arrdata0.length);
+			//for(var ArrCnt = 0; ArrCnt<arrdata0.length; ArrCnt++){rawData[ArrCnt] = arrdata0[ArrCnt];}
+			rawData = arrdata0.slice();
+			maxdata[cnt]=Math.max.apply(null,arrdata0);//alert("MAX");alert(maxdata[cnt]);//
+			mindata[cnt]=Math.min.apply(null,arrdata0);//alert("MIN");alert(mindata[cnt]);
+			averagedata[cnt] = arrAverageNum2(arrdata0);//alert("Average");alert(averagedata[cnt]);
+			peakdata[cnt] = maxdata[cnt] - mindata[cnt];//alert("PEAK");alert(peakdata[cnt]);
+			RMEANdata[cnt] = averagedata[cnt];//alert("平均幅值");alert(RMEANdata[cnt]); //平均幅值
+			meanSquareValue[cnt] = sumOfsqrt(arrdata0)/arrdata0.length;//alert("均方值");alert(meanSquareValue[cnt]);//均方值 信号的能量
+			variance[cnt] = sumOfsqrtVariance(arrdata0, averagedata[cnt])/arrdata0.length;//alert("方差");alert(variance[cnt]);//方差 信号能量的动态分量
+			RMS[cnt] = Math.sqrt(meanSquareValue[cnt]);//alert("均方根（RMS）");alert(RMS[cnt]);//均方根（RMS）又叫有效值
+			standardDeviation[cnt]	= Math.sqrt(variance[cnt]);//alert("标准差");alert(standardDeviation[cnt]);//标准差
+			Kurtosis[cnt] = (sumOfsqrtVarianceKurtosis(arrdata0, averagedata[cnt])/arrdata0.length)/(variance[cnt]*variance[cnt]);//alert("峭度");alert(Kurtosis[cnt]);//峭度
+			skewness[cnt] = (sumOfsqrtVarianceskewness(arrdata0, averagedata[cnt])/arrdata0.length)/(standardDeviation[cnt]*standardDeviation[cnt]*standardDeviation[cnt]);//alert("偏度");alert(skewness[cnt]);//偏度
+			peakfactor[cnt] = peakdata[cnt]/RMS[cnt];//alert("峰值因子");alert(peakfactor[cnt]);// 峰值因子
+			pulsefactor[cnt] = peakdata[cnt]/RMEANdata[cnt];;//alert("脉冲因子");alert(pulsefactor[cnt]);// 脉冲因子
+			marginfactor[cnt] = peakdata[cnt]/((sumOfMarginFactor0(arrdata0)/arrdata0.length)*((sumOfMarginFactor0(arrdata0)/arrdata0.length)));//alert("裕度因子");alert(marginfactor[cnt]);//裕度因子
+	  		waveformfactor[cnt] = RMS[cnt]/RMEANdata[cnt];//alert("波形因子");alert(waveformfactor[cnt]);//波形因子
+			callJAVAFFT(rawData, cnt, arrdata0.length);
+		  }
+			var maxdataAngle = new Array(6);
+			  for(var cnt = 15; cnt<21; cnt++){
+				arrdata0 = [];
+				arrdata0 = data[cnt].slice(startCalc,(startCalc+stopCalc));//alert(arrdata0);
+				var rawData = new Array(arrdata0.length);
+				//for(var ArrCnt = 0; ArrCnt<arrdata0.length; ArrCnt++){rawData[ArrCnt] = arrdata0[ArrCnt];}
+				rawData = arrdata0.slice();
+				maxdataAngle[cnt-15]=Math.max.apply(null,arrdata0);//alert("MAX");alert(maxdata[cnt]);//
+				
+			  }		  
+		  
+       		  
+	
+
+		  
+
+
+		alert("callJava");
+		  //alert(window.EventJavascriptInterface.testJSCall1());
+		  callJAVA(maxdata, mindata, averagedata, peakdata, RMEANdata, meanSquareValue, variance, RMS, standardDeviation, Kurtosis, skewness, waveformfactor, peakfactor, pulsefactor, marginfactor, startCalc, xAxisData[startCalc], (startCalc+stopCalc), xAxisData[(startCalc+stopCalc)], arrdata0.length, maxdataAngle);
+		//alert(window.EventJavascriptInterface.testJSCallOption( startCalc, xAxisData[startCalc], (startCalc+stopCalc), xAxisData[(startCalc+stopCalc)], arrdata0.length));
+
+		}
+
+		function arrAverageNum2(arr){
+		    var sum = eval(arr.join("+"));
+		    return ~~(sum/arr.length*1000000)/1000000;
+		}
+		function sumOfsqrt(arr){
+			var total = 0;
+
+			for (var index = 0; index < arr.length; index++) {
+			    total += arr[index] * arr[index];
+			}
+			return total;
+		}
+ 		function sumOfMarginFactor0(arr){
+			var total = 0;
+
+			for (var index = 0; index < arr.length; index++) {
+			    total += Math.sqrt(arr[index]);
+			}
+			return total;
+		}
+		function sumOfsqrtVariance(arr, averagedata0){
+			var total = 0;
+
+			for (var index = 0; index < arr.length; index++) {
+			    total += (arr[index]-averagedata0) * (arr[index]-averagedata0);
+			}
+			return total;
+		}
+		function sumOfsqrtVarianceKurtosis(arr, averagedata0){
+			var total = 0;
+
+			for (var index = 0; index < arr.length; index++) {
+			    total += (arr[index]-averagedata0) * (arr[index]-averagedata0)*(arr[index]-averagedata0) * (arr[index]-averagedata0);
+			}
+			return total;
+		}
+		function sumOfsqrtVarianceskewness(arr, averagedata0){
+			var total = 0;
+
+			for (var index = 0; index < arr.length; index++) {
+			    total += (arr[index]-averagedata0) * (arr[index]-averagedata0)*(arr[index]-averagedata0);
+			}
+			return total;
+		}
+		//function refreshData (date0, date1, date2,date3,date4, date5, date6, date7, date8 ,date9, dataA0, dataA1, dataA2,dataA3,dataA4, dataA5, dataA6, dataA7, dataA8 ,dataA9, dataB0, dataB1, dataB2,dataB3,dataB4, dataB5, dataB6, dataB7, dataB8 ,dataB9, dataC0, dataC1, dataC2,dataC3,dataC4, dataC5, dataC6, dataC7, dataC8 ,dataC9, dataD0, dataD1, dataD2,dataD3,dataD4, dataD5, dataD6, dataD7, dataD8 ,dataD9, dataE0, dataE1, dataE2,dataE3,dataE4, dataE5, dataE6, dataE7, dataE8 ,dataE9, dataF0, dataF1, dataF2,dataF3,dataF4, dataF5, dataF6, dataF7, dataF8 ,dataF9, dataG0, dataG1, dataG2,dataG3,dataG4, dataG5, dataG6, dataG7, dataG8 ,dataG9, dataH0, dataH1, dataH2,dataH3,dataH4, dataH5, dataH6, dataH7, dataH8 ,dataH9, dataI0, dataI1, dataI2,dataI3,dataI4, dataI5, dataI6,dataI7, dataI8 ,dataI9, dataJ0, dataJ1, dataJ2,dataJ3,dataJ4, dataJ5, dataJ6, dataJ7, dataJ8 ,dataJ9, dataK0, dataK1, dataK2,dataK3,dataK4, dataK5, dataK6, dataK7, dataK8 ,dataK9, dataL0, dataL1, dataL2,dataL3,dataL4, dataL5, dataL6, dataL7, dataL8 ,dataL9, dataM0, dataM1, dataM2,dataM3,dataM4, dataM5, dataM6, dataM7, dataM8 ,dataM9, dataN0, dataN1, dataN2,dataN3,dataN4, dataN5, dataN6, dataN7, dataN8 ,dataN9, dataO0, dataO1, dataO2,dataO3,dataO4, dataO5, dataO6, dataO7, dataO8 ,dataO9) {
+		var FrameAccept = 0;
+  		function refreshData (date0,  dataA0,  dataB0, dataC0, dataD0,  dataE0, dataF0,  dataG0,  dataH0, dataI0, dataJ0,  dataK0, dataL0,  dataM0,  dataN0,  dataO0, leftKneeAngleData, rightKneeAngleData, leftElbowAngleData, rightElbowAngleData, leftShoulderAngleData, rightShoulderAngleData) {		
+			//alert(date);
+/*
+			this.xAxisData[this.count] = date;//alert(date);
+			this.data0[this.count] = i0;//alert(date);
+			this.data1[this.count] = i1;//alert(date);
+			this.data2[this.count] = i2;//alert(date);
+			this.data3[this.count] = i3;//alert(date);
+			this.data4[this.count] = i4;//alert(date);
+			this.data5[this.count] = i5;//alert(date);
+			this.data6[this.count] = i6;//alert(date);
+			this.data7[this.count] = i7;//alert(date);
+			this.data8[this.count] = i8;//alert(date);
+			this.data9[this.count] = i9;//alert(date);
+			this.data10[this.count] = i10;//alert(date);
+			this.data11[this.count] = i11;//alert(date);
+			this.data12[this.count] = i12;//alert(date);
+			this.count++;//alert(date);
+*/
+			removeData = false;
+			var FrameCntPS = 1;
+			for(var i = 0;i<FrameCntPS; i++){
+			this.xAxisData.push(date0);/*
+			this.xAxisData.push(date1);
+			this.xAxisData.push(date2);
+			this.xAxisData.push(date3);
+			this.xAxisData.push(date4);
+			this.xAxisData.push(date5);
+			this.xAxisData.push(date6);
+			this.xAxisData.push(date7);
+			this.xAxisData.push(date8);
+			this.xAxisData.push(date9);*/
+
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[0].push(dataA0);/*//alert(date);
+			this.data[0].push(dataA1);//alert(date);
+			this.data[0].push(dataA2);//alert(date);
+			this.data[0].push(dataA3);//alert(date);
+			this.data[0].push(dataA4);//alert(date);
+			this.data[0].push(dataA5);//alert(date);
+			this.data[0].push(dataA6);//alert(date);
+			this.data[0].push(dataA7);//alert(date);
+			this.data[0].push(dataA8);//alert(date);
+			this.data[0].push(dataA9);//alert(date);*/
+
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[1].push(dataB0);/*//alert(date);
+			this.data[1].push(dataB1);//alert(date);
+			this.data[1].push(dataB2);//alert(date);
+			this.data[1].push(dataB3);//alert(date);
+			this.data[1].push(dataB4);//alert(date);
+			this.data[1].push(dataB5);//alert(date);
+			this.data[1].push(dataB6);//alert(date);
+			this.data[1].push(dataB7);//alert(date);
+			this.data[1].push(dataB8);//alert(date);
+			this.data[1].push(dataB9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[2].push(dataC0);/*//alert(date);
+			this.data[2].push(dataC1);//alert(date);
+			this.data[2].push(dataC2);//alert(date);
+			this.data[2].push(dataC3);//alert(date);
+			this.data[2].push(dataC4);//alert(date);
+			this.data[2].push(dataC5);//alert(date);
+			this.data[2].push(dataC6);//alert(date);
+			this.data[2].push(dataC7);//alert(date);
+			this.data[2].push(dataC8);//alert(date);
+			this.data[2].push(dataC9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[3].push(dataD0);/*//alert(date);
+			this.data[3].push(dataD1);//alert(date);
+			this.data[3].push(dataD2);//alert(date);
+			this.data[3].push(dataD3);//alert(date);
+			this.data[3].push(dataD4);//alert(date);
+			this.data[3].push(dataD5);//alert(date);
+			this.data[3].push(dataD6);//alert(date);
+			this.data[3].push(dataD7);//alert(date);
+			this.data[3].push(dataD8);//alert(date);
+			this.data[3].push(dataD9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[4].push(dataE0);/*//alert(date);
+			this.data[4].push(dataE1);//alert(date);
+			this.data[4].push(dataE2);//alert(date);
+			this.data[4].push(dataE3);//alert(date);
+			this.data[4].push(dataE4);//alert(date);
+			this.data[4].push(dataE5);//alert(date);
+			this.data[4].push(dataE6);//alert(date);
+			this.data[4].push(dataE7);//alert(date);
+			this.data[4].push(dataE8);//alert(date);
+			this.data[4].push(dataE9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[5].push(dataF0);/*//alert(date);
+			this.data[5].push(dataF1);//alert(date);
+			this.data[5].push(dataF2);//alert(date);
+			this.data[5].push(dataF3);//alert(date);
+			this.data[5].push(dataF4);//alert(date);
+			this.data[5].push(dataF5);//alert(date);
+			this.data[5].push(dataF6);//alert(date);
+			this.data[5].push(dataF7);//alert(date);
+			this.data[5].push(dataF8);//alert(date);
+			this.data[5].push(dataF9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[6].push(dataG0);/*//alert(date);
+			this.data[6].push(dataG1);//alert(date);
+			this.data[6].push(dataG2);//alert(date);
+			this.data[6].push(dataG3);//alert(date);
+			this.data[6].push(dataG4);//alert(date);
+			this.data[6].push(dataG5);//alert(date);
+			this.data[6].push(dataG6);//alert(date);
+			this.data[6].push(dataG7);//alert(date);
+			this.data[6].push(dataG8);//alert(date);
+			this.data[6].push(dataG9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[7].push(dataH0);/*//alert(date);
+			this.data[7].push(dataH1);//alert(date);
+			this.data[7].push(dataH2);//alert(date);
+			this.data[7].push(dataH3);//alert(date);
+			this.data[7].push(dataH4);//alert(date);
+			this.data[7].push(dataH5);//alert(date);
+			this.data[7].push(dataH6);//alert(date);
+			this.data[7].push(dataH7);//alert(date);
+			this.data[7].push(dataH8);//alert(date);
+			this.data[7].push(dataH9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[8].push(dataI0);/*//alert(date);
+			this.data[8].push(dataI1);//alert(date);
+			this.data[8].push(dataI2);//alert(date);
+			this.data[8].push(dataI3);//alert(date);
+			this.data[8].push(dataI4);//alert(date);
+			this.data[8].push(dataI5);//alert(date);
+			this.data[8].push(dataI6);//alert(date);
+			this.data[8].push(dataI7);//alert(date);
+			this.data[8].push(dataI8);//alert(date);
+			this.data[8].push(dataI9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[9].push(dataJ0);/*//alert(date);
+			this.data[9].push(dataJ1);//alert(date);
+			this.data[9].push(dataJ2);//alert(date);
+			this.data[9].push(dataJ3);//alert(date);
+			this.data[9].push(dataJ4);//alert(date);
+			this.data[9].push(dataJ5);//alert(date);
+			this.data[9].push(dataJ6);//alert(date);
+			this.data[9].push(dataJ7);//alert(date);
+			this.data[9].push(dataJ8);//alert(date);
+			this.data[9].push(dataJ9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[10].push(dataK0);/*//alert(date);
+			this.data[10].push(dataK1);//alert(date);
+			this.data[10].push(dataK2);//alert(date);
+			this.data[10].push(dataK3);//alert(date);
+			this.data[10].push(dataK4);//alert(date);
+			this.data[10].push(dataK5);//alert(date);
+			this.data[10].push(dataK6);//alert(date);
+			this.data[10].push(dataK7);//alert(date);
+			this.data[10].push(dataK8);//alert(date);
+			this.data[10].push(dataK9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[11].push(dataL0);/*//alert(date);
+			this.data[11].push(dataL1);//alert(date);
+			this.data[11].push(dataL2);//alert(date);
+			this.data[11].push(dataL3);//alert(date);
+			this.data[11].push(dataL4);//alert(date);
+			this.data[11].push(dataL5);//alert(date);
+			this.data[11].push(dataL6);//alert(date);
+			this.data[11].push(dataL7);//alert(date);
+			this.data[11].push(dataL8);//alert(date);
+			this.data[11].push(dataL9);//alert(date);*/
+
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[12].push(dataM0);/*//alert(date);
+			this.data[12].push(dataM1);//alert(date);
+			this.data[12].push(dataM2);//alert(date);
+			this.data[12].push(dataM3);//alert(date);
+			this.data[12].push(dataM4);//alert(date);
+			this.data[12].push(dataM5);//alert(date);
+			this.data[12].push(dataM6);//alert(date);
+			this.data[12].push(dataM7);//alert(date);
+			this.data[12].push(dataM8);//alert(date);
+			this.data[12].push(dataM9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[13].push(dataN0);/*//alert(date);
+			this.data[13].push(dataN1);//alert(date);
+			this.data[13].push(dataN2);//alert(date);
+			this.data[13].push(dataN3);//alert(date);
+			this.data[13].push(dataN4);//alert(date);
+			this.data[13].push(dataN5);//alert(date);
+			this.data[13].push(dataN6);//alert(date);
+			this.data[13].push(dataN7);//alert(date);
+			this.data[13].push(dataN8);//alert(date);
+			this.data[13].push(dataN9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[14].push(dataO0);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[15].push(leftKneeAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[16].push(rightKneeAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[17].push(leftElbowAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[18].push(rightElbowAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[19].push(leftShoulderAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+			for(var i = 0;i<FrameCntPS; i++){
+			this.data[20].push(rightShoulderAngleData);/*//alert(date);
+			this.data[14].push(dataO1);//alert(date);
+			this.data[14].push(dataO2);//alert(date);
+			this.data[14].push(dataO3);//alert(date);
+			this.data[14].push(dataO4);//alert(date);
+			this.data[14].push(dataO5);//alert(date);
+			this.data[14].push(dataO6);//alert(date);
+			this.data[14].push(dataO7);//alert(date);
+			this.data[14].push(dataO8);//alert(date);
+			this.data[14].push(dataO9);//alert(date);*/
+			}
+
+		FrameAccept++;
+		if (FrameAccept == 30){
+		alert("refreshData!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		this.myChart.setOption(this.option, false);
+		removeData = true;
+		FrameAccept = 0;
+		}
+
+		//alert("refreshData!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+ 		}
+
+		function deleteData() {
+			
+			this.xAxisData = [];
+			this.data = new Array();
+			for(var k=0;k<21;k++){        //一维长度为i,i为变量，可以根据实际情况改变  
+				data[k]=new Array();    //声明二维，每一个一维数组里面的一个元素都是一个数组
+			}
+			//this.data0 = [];
+			//this.data1 = [];
+			//this.data2 = [];
+			//this.data3 = [];
+			//this.data4 = [];
+			//this.data5 = [];
+			//this.data6 = [];
+			//this.data7 = [];
+			//this.data8 = [];
+			//this.data9 = [];
+			//this.data10 = [];
+			//this.data11 = [];
+			//this.data12 = [];
+			//this.data13 = [];
+			//this.data14 = [];
+		option = {
+		  title: {
+		    text: '人体关键点运动分析',
+			top: '1%',
+			left: '40%',
+			right: '4%',
+			bottom: '3%',
+		  },
+		  tooltip: {
+		    trigger: 'axis',
+		    axisPointer: {
+		      type: 'cross',
+		      label: {
+			backgroundColor: '#6a7985'
+		      }
+		    }
+		  },
+		  legend: {
+		    data: ['头部', '右肩部', '右肘部' ,'右手腕部' , '左肩部', '左肘部' ,'左手腕部', '右臀部' ,'右膝部' ,'右脚腕部', '左臀部' ,'左膝部' ,'左脚腕部','右脚跟' ,'左脚跟'],
+			top: '6%',
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+		  },
+		  toolbox: {
+			top: '0%',
+			right: '10%',
+			itemSize: 20,
+		    feature: {
+			myTool1: {
+		        show: true,
+		        title: '清空数据',
+		        icon: 'image://clean.png',
+		        onclick: function (){
+		            alert('清空数据!');
+			    deleteData()
+		        }
+		    },
+			myTool1space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+		      dataZoom: {
+			yAxisIndex: false
+		      },
+		      saveAsImage: {
+			pixelRatio: 2
+		      },/*
+            		myTool1: {
+		        show: true,
+		        title: '清空数据',
+		        icon: 'image://clean.png',
+		        onclick: function (){
+		            alert('清空数据!')
+		        }
+		    },*/
+			myTool2space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+
+		    myTool2: {
+		        show: true,
+		        title: '暂停',
+		        icon: 'image://stop.png',
+		        onclick: function (){
+				callJAVAStop()
+		            alert('暂停!')
+		        }
+		    },
+			myTool3space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+		    myTool3: {
+		        show: true,
+		        title: '开始',
+		        icon: 'image://run.png',
+		        onclick: function (){
+				callJAVARun()
+		            alert('开始!')
+		        }
+		    },
+			myTool4space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    },
+			restore: {}
+			,
+			myTool5space: {
+		        show: true,
+		        title: '',
+		        icon: 'image://clean11.png',
+		        onclick: function (){
+		            //alert('清空数据!')
+		        }
+		    }
+		    }
+		  },
+		  dataZoom: [
+		    {
+		      type: 'inside'
+		    },
+		    {
+		      type: 'slider',
+		    bottom: '5%'
+		    }
+		  ],
+		  brush:{
+			toolbox:['lineX', 'keep', 'clear'],
+			xAxisIndex: 0,
+		    brushStyle: {
+		      borderWidth: 1,
+		      color: 'rgba(255,36,36,0.2)',
+		      borderColor: '#ff2424'
+		    }
+		  },
+		  grid: {
+ 		    top: "10%",
+		    left: '3%',
+		    right: '4%',
+		    bottom: '10%',
+		    containLabel: true
+		  },
+		  xAxis: [
+		    {
+		      type: 'category',
+		      boundaryGap: false,
+		      //data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+		      data: xAxisData
+		    }
+		  ],
+		  yAxis: [
+		    {
+		      type: 'value'
+		    }
+		  ],
+		  series: [
+		    {
+		      name: '头部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[0]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右肩部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		       data: data[1]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右肘部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[2]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右手腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[3]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+{
+		      name: '左肩部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[4]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左肘部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[5]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左手腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[6]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右臀部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[7]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+{
+		      name: '右膝部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[8]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右脚腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[9]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左臀部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[10]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左膝部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[11]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左脚腕部',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[12]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '右脚跟',
+		      type: 'line',
+		      //stack: 'Total',
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[13]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    },
+		    {
+		      name: '左脚跟',
+		      type: 'line',
+		      //stack: 'Total',
+		      label: {
+			show: true,
+			position: 'top'
+		      },
+		      areaStyle: {},
+		      emphasis: {
+			focus: 'series'
+		      },
+		      data: data[14]
+			//data: [120, 132, 101, 134, 90, 230, 210]
+		    }
+		  ]
+		};
+
+                this.myChart.clear();//清空
+		//option && myChart.setOption(option);
+			this.myChart.setOption(this.option, true);
+		
+		}
+
+		function alertMessage(message) {
+       		 alert(message)
+    		}
+
+		function sayHello() {
+        	alert("Hello")
+    		}
+
+		 function  highestOneBit(i) {
+			// HD, Figure 3-1
+			i |= (i >>  1);
+			i |= (i >>  2);
+			i |= (i >>  4);
+			i |= (i >>  8);
+			i |= (i >> 16);
+			return i - (i >>> 1);
+		    }
+		//alertMessage(highestOneBit(1023));
+		//sayHello();alertMessage("Alles Gute");
+		//refreshData ("15:15:15",10,20,30,40,5,0,1,2,3,5,4,6,5,6,5); refreshData ("15:15:16",11,20,30,40,5,0,1,2,3,5,4,6,5,6,5);
+		//refreshData ("15:15:17",12,20,30,40,5,0,1,2,3,5,4,6,5,6,5); refreshData ("15:15:18",13,20,30,40,5,0,1,2,3,5,4,6,5,6,5);
+		//refreshData ("15:15:19",14,20,30,40,5,0,1,2,3,5,4,6,5,6,5); refreshData ("15:15:20",13,20,30,40,5,0,1,2,3,5,4,6,5,6,5);
+		//refreshData ("15:15:21",12,20,30,40,5,0,1,2,3,5,4,6,5,6,5); refreshData ("15:15:22",11,20,30,40,5,0,1,2,3,5,4,6,5,6,5);
+		//refreshData ("15:15:23",10,20,30,40,5,0,1,2,3,5,4,6,5,6,5); //refreshData ("15:15:24",11,20,30,40,5,0,1,2,3,5,4,6,5,6,5);
+		//refreshData ("0:37:46","0:37:46","0:37:46","0:37:46","0:37:46","0:37:46","0:37:46","0:37:47","0:37:47","0:37:47", 584, 589, 559, 559, 553, 597, 585, 594, 592, 572, 482, 482, 468, 458, 467, 474, 477, 474, 482, 471, 416, 402, 383, 356, 381, 377, 378, 385, 389, 352, 394, 398, 340, 272, 355, 392, 377, 419, 349, 266, 471, 477, 460, 463, 465, 483, 484, 485, 500, 491, 300, 321, 303, 300, 301, 323, 327, 342, 399, 364, 250, 296, 294, 268, 277, 293, 297, 315, 443, 379, 109, 107, 111, 111, 115, 105, 104, 97, 97, 103, 168, 173, 113, 126, 125, 160, 171, 204, 219, 130, 468, 502, 404, 401, 350, 471, 491, 529, 551, 446, 113, 110, 114, 115, 119, 109, 107, 100, 100, 106, 109, 64, 204, 179, 229, 59, 55, 87, 87, 147, 204, 230, 125, 148, 119, 224, 252, 307, 301, 156, 394, 379, 309, 349, 326, 338, 367, 383, 470, 362, 292, 229, 346, 341, 352, 230, 240, 270, 301, 257);
+//refreshData("1:28:26", 568, 480, 384, 449, 476, 329, 357, 120, 161, 256, 126, 339, 131, 354, 484);
+//refreshData("10:24:10", 559, 444, 318, 288, 442, 399, 431, 118, 174, 506, 118, 228, 283, 511, 505);
+//refreshData("10:24:10", 538, 451, 360, 410, 467, 386, 406, 116, 208, 447, 115, 127, 202, 359, 201);
+//refreshData("10:24:10", 538, 451, 360, 410, 467, 386, 406, 116, 208, 447, 115, 127, 202, 359, 201);
+//refreshData("10:24:10", 538, 451, 360, 410, 467, 386, 406, 116, 208, 447, 115, 127, 202, 359, 201);
+		//deleteData();
+
+		function callJAVA(maxdata, mindata, averagedata, peakdata, RMEANdata, meanSquareValue, variance, RMS, standardDeviation, Kurtosis, skewness, waveformfactor, peakfactor, pulsefactor, marginfactor, startCalc, xAxisDataStartDate, stopCalc, xAxisDataStopDate, sampleLength, maxdataAngle){
+		    alert(window.EventJavascriptInterface.testJSCall1());
+		    alert(window.EventJavascriptInterface.testJSCall(maxdata, mindata, averagedata, peakdata, RMEANdata, meanSquareValue, variance, RMS, standardDeviation, Kurtosis, skewness, waveformfactor, peakfactor, pulsefactor, marginfactor, startCalc, xAxisDataStartDate, stopCalc, xAxisDataStopDate, sampleLength, maxdataAngle));
+		    alert(window.EventJavascriptInterface.testJSCall1());
+		}
+
+		function callJAVAFFT(rawData, channelNum, sampleLength){
+		    alert(window.EventJavascriptInterface.testJSCall1());
+		    alert(window.EventJavascriptInterface.testJSCallFFT(rawData, channelNum, sampleLength));
+		    alert(window.EventJavascriptInterface.testJSCall1());
+		}
+		function callJAVARun(){
+			alert(window.EventJavascriptInterface.testJSCallRun());
+		}
+		function callJAVAStop(){
+			alert(window.EventJavascriptInterface.testJSCallStop());
+		}
+
+
+        </script>
+    </body>
+</html>
