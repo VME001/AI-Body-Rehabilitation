@@ -13,7 +13,8 @@ A portable non-contact AI auxiliary diagnosis method and system for rehabilitati
 <img width="2560" height="1600" alt="4" src="https://github.com/user-attachments/assets/48bb36a9-df24-4f24-869b-c447f1b04d16" />
 
 <img width="2560" height="1600" alt="5" src="https://github.com/user-attachments/assets/ac5ac60a-1f31-42d2-9ad1-461e1d3903f0" />
-
+Value：Leveraging the BlazePose algorithm for real-time, on-device body tracking, alongside large-scale rehabilitation models for orthopedic trauma, this initiative aims to assist individuals with limb impairments—caused by accidents, conflict, or limited medical access—in achieving efficient, science-based recovery. The goal is to facilitate rapid adaptation to prosthetics and the restoration of near-normal motor functions for patients of all ages.
+<img width="774" height="1280" alt="6" src="https://github.com/user-attachments/assets/6d5b66a5-0b32-4e8f-8797-af2ab1fd2b98" />
 
 Operating environment:
 
