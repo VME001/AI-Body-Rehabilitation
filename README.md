@@ -1,12 +1,18 @@
 # AI-Body-Rehabilitation
 A portable non-contact AI auxiliary diagnosis method and system for rehabilitation training of upper and lower limbs after orthopedic surgery based on BlazePose human key point recognition
 
+<img width="668" height="1019" alt="image" src="https://github.com/user-attachments/assets/67182ca2-c6ca-4012-9a13-2ecd931fbf28" />
+
 
 <img width="2560" height="1600" alt="1" src="https://github.com/user-attachments/assets/38c7778e-2511-49ab-a11a-a2f4446be8e7" />
 
+<img width="2560" height="1600" alt="2" src="https://github.com/user-attachments/assets/d65d50f6-a603-4522-b5e4-ff95fbffc510" />
 
+<img width="2560" height="1600" alt="3" src="https://github.com/user-attachments/assets/e518eb6a-1767-4cbd-8b2e-47a6e8c2ae58" />
 
+<img width="2560" height="1600" alt="4" src="https://github.com/user-attachments/assets/48bb36a9-df24-4f24-869b-c447f1b04d16" />
 
+<img width="2560" height="1600" alt="5" src="https://github.com/user-attachments/assets/ac5ac60a-1f31-42d2-9ad1-461e1d3903f0" />
 
 
 Operating environment:
